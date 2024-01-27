@@ -1,24 +1,24 @@
 import java.util.Scanner;
 
-public class SJF {
-
-    public void performSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
+public class PSJF {
+    public void performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
         int pid[] = new int[n];
         int ct[] = new int[n];
         int ta[] = new int[n];
         int wt[] = new int[n];
         int f[] = new int[n];
+        int k[] = new int[n];
         int st = 0, tot = 0;
         float avgwt = 0, avgta = 0;
 
         for (int i = 0; i < n; i++) {
             pid[i] = i + 1;
+            k[i] = burstTime[i];
             f[i] = 0;
         }
 
         while (true) {
-            int c = n, min = 999;
-
+            int min = 99, c = n;
             if (tot == n) {
                 break;
             }
@@ -33,20 +33,26 @@ public class SJF {
             if (c == n) {
                 st++;
             } else {
-                ct[c] = st + burstTime[c];
-                st += burstTime[c];
-                ta[c] = ct[c] - arrivalTime[c];
-                wt[c] = ta[c] - burstTime[c];
-                f[c] = 1;
-                tot++;
+                burstTime[c]--;
+                st++;
+                if (burstTime[c] == 0) {
+                    ct[c] = st;
+                    f[c] = 1;
+                    tot++;
+                }
             }
         }
 
-        System.out.println("\npid  arrival burst  complete turn waiting");
         for (int i = 0; i < n; i++) {
+            ta[i] = ct[i] - arrivalTime[i];
+            wt[i] = ta[i] - k[i];
             avgwt += wt[i];
             avgta += ta[i];
-            System.out.println(pid[i] + "\t" + arrivalTime[i] + "\t" + burstTime[i] + "\t" + ct[i] + "\t" + ta[i] + "\t" + wt[i]);
+        }
+
+        System.out.println("pid  arrival  burst  complete turn waiting");
+        for (int i = 0; i < n; i++) {
+            System.out.println(pid[i] + "\t" + arrivalTime[i] + "\t" + k[i] + "\t" + ct[i] + "\t" + ta[i] + "\t" + wt[i]);
         }
 
         System.out.println("\naverage tat is " + (float) (avgta / n));
@@ -67,8 +73,8 @@ public class SJF {
             burstTime[i] = sc.nextInt();
         }
 
-        SJF sjf = new SJF();
-        sjf.performSJFScheduling(n, arrivalTime, burstTime);
+        PSJF psjf = new PSJF();
+        psjf.performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
 
         sc.close();
     }
