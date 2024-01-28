@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class SJF {
 
-    public void performSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
+    public String performSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
         int pid[] = new int[n];
         int ct[] = new int[n];
         int ta[] = new int[n];
@@ -15,6 +15,8 @@ public class SJF {
             pid[i] = i + 1;
             f[i] = 0;
         }
+
+        StringBuilder result = new StringBuilder("pid  arrival burst  complete turn waiting\n");
 
         while (true) {
             int c = n, min = 999;
@@ -42,15 +44,17 @@ public class SJF {
             }
         }
 
-        System.out.println("\npid  arrival burst  complete turn waiting");
         for (int i = 0; i < n; i++) {
             avgwt += wt[i];
             avgta += ta[i];
-            System.out.println(pid[i] + "\t" + arrivalTime[i] + "\t" + burstTime[i] + "\t" + ct[i] + "\t" + ta[i] + "\t" + wt[i]);
+            result.append(pid[i]).append("\t").append(arrivalTime[i]).append("\t").append(burstTime[i])
+                    .append("\t").append(ct[i]).append("\t").append(ta[i]).append("\t").append(wt[i]).append("\n");
         }
 
-        System.out.println("\naverage tat is " + (float) (avgta / n));
-        System.out.println("average wt is " + (float) (avgwt / n));
+        result.append("\naverage tat is ").append((float) (avgta / n)).append("\n");
+        result.append("average wt is ").append((float) (avgwt / n)).append("\n");
+
+        return result.toString();
     }
 
     public static void main(String args[]) {
@@ -68,7 +72,8 @@ public class SJF {
         }
 
         SJF sjf = new SJF();
-        sjf.performSJFScheduling(n, arrivalTime, burstTime);
+        String result = sjf.performSJFScheduling(n, arrivalTime, burstTime);
+        System.out.println(result);
 
         sc.close();
     }

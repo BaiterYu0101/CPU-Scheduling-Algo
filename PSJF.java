@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class PSJF {
-    public void performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
+    public String performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
         int pid[] = new int[n];
         int ct[] = new int[n];
         int ta[] = new int[n];
@@ -16,6 +16,8 @@ public class PSJF {
             k[i] = burstTime[i];
             f[i] = 0;
         }
+
+        StringBuilder result = new StringBuilder("pid  arrival  burst  complete turn waiting\n");
 
         while (true) {
             int min = 99, c = n;
@@ -48,15 +50,14 @@ public class PSJF {
             wt[i] = ta[i] - k[i];
             avgwt += wt[i];
             avgta += ta[i];
+            result.append(pid[i]).append("\t").append(arrivalTime[i]).append("\t").append(k[i]).append("\t")
+                    .append(ct[i]).append("\t").append(ta[i]).append("\t").append(wt[i]).append("\n");
         }
 
-        System.out.println("pid  arrival  burst  complete turn waiting");
-        for (int i = 0; i < n; i++) {
-            System.out.println(pid[i] + "\t" + arrivalTime[i] + "\t" + k[i] + "\t" + ct[i] + "\t" + ta[i] + "\t" + wt[i]);
-        }
+        result.append("\naverage tat is ").append((float) (avgta / n)).append("\n");
+        result.append("average wt is ").append((float) (avgwt / n)).append("\n");
 
-        System.out.println("\naverage tat is " + (float) (avgta / n));
-        System.out.println("average wt is " + (float) (avgwt / n));
+        return result.toString();
     }
 
     public static void main(String args[]) {
@@ -74,7 +75,8 @@ public class PSJF {
         }
 
         PSJF psjf = new PSJF();
-        psjf.performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
+        String result = psjf.performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
+        System.out.println(result);
 
         sc.close();
     }
