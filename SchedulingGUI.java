@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 public class SchedulingGUI {
     public static final int NON_PREEMPTIVE_SJF = 1;
     public static final int PREEMPTIVE_SJF = 2;
+    public static final int NON_PREEMPTIVE_PRIORITY_SJF = 3;
     public static final int EXIT = 0;
 
     private JFrame frame;
@@ -25,7 +26,7 @@ public class SchedulingGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
 
-        algorithmComboBox = new JComboBox<>(new String[]{"Select Algorithm", "Non-Preemptive SJF", "Preemptive SJF", "Exit"});
+        algorithmComboBox = new JComboBox<>(new String[]{"Select Algorithm", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Exit"});
         frame.getContentPane().add(algorithmComboBox, BorderLayout.NORTH);
 
         executeButton = new JButton("Execute");
