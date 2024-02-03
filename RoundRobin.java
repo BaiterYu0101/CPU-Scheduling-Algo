@@ -33,52 +33,58 @@ public class RoundRobin {
         int[] waitingTimes = new int[n];
 
         int currentTime = 0;
-        int processedCount = 0;
+        int currentProcessIndex = 0;
 
-        while (processedCount < n) {
-            boolean processExecuted = false;
-
-            for (int i = 0; i < n; i++) {
-                if (arrivalTimes[i] <= currentTime && burstTimes[i] > 0) {
-                    Process currentProcess = new Process(i, arrivalTimes[i], burstTimes[i]);
-                    int executionTime = Math.min(currentProcess.remainingTime, quantum);
-
-                    // Update finish time
-                    currentTime += executionTime;
-                    finishTimes[currentProcess.id] = currentTime;
-
-                    // Update remaining time
-                    currentProcess.remainingTime -= executionTime;
-
-                    // Update waiting time
-                    waitingTimes[currentProcess.id] = currentTime - currentProcess.arrivalTime - currentProcess.burstTime;
-
-                    // Update turnaround time
-                    turnaroundTimes[currentProcess.id] = currentTime - currentProcess.arrivalTime;
-
-                    if (currentProcess.remainingTime == 0) {
-                        processedCount++;
-                    } else {
-                        processQueue.offer(currentProcess);
-                    }
-
-                    processExecuted = true;
-                }
+        while (currentProcessIndex < n || !processQueue.isEmpty()) {
+            // add arrived processes to the queue
+            while (currentProcessIndex < n && arrivalTimes[currentProcessIndex] <= currentTime) {
+                processQueue.offer(new Process(currentProcessIndex, arrivalTimes[currentProcessIndex], burstTimes[currentProcessIndex]));
+                currentProcessIndex++;
             }
 
-            if (!processExecuted) {
-                // No process executed in the current cycle, move to the next arrival time
-                int nextArrivalTime = Integer.MAX_VALUE;
-                for (int i = 0; i < n; i++) {
-                    if (burstTimes[i] > 0 && arrivalTimes[i] < nextArrivalTime) {
-                        nextArrivalTime = arrivalTimes[i];
-                    }
+            // if the queue is not empty, execute the process
+            if (!processQueue.isEmpty()) {
+                // get the process from the front
+                Process currentProcess = processQueue.poll();
+
+                // testing: print process id
+                //System.out.println("Process " + currentProcess.id + " is executing");
+
+                // execute for quantum time
+                int executeTime = Math.min(quantum, currentProcess.remainingTime);
+
+                // update remaining time
+                currentProcess.remainingTime -= executeTime;
+                
+                // testing: print remaining time
+                //System.out.println("Remaining time: " + currentProcess.remainingTime);
+
+                // update finish time
+                currentTime += executeTime;
+                finishTimes[currentProcess.id] = currentTime;
+
+                // get next process and execute
+                while (currentProcessIndex < n && arrivalTimes[currentProcessIndex] <= currentTime) {
+                    processQueue.offer(new Process(currentProcessIndex, arrivalTimes[currentProcessIndex], burstTimes[currentProcessIndex]));
+                    currentProcessIndex++;
                 }
-                currentTime = Math.max(currentTime, nextArrivalTime);
+
+                // requeue the process if it's not finished
+                if (currentProcess.remainingTime > 0) {
+                    processQueue.offer(currentProcess);
+                }
+
+                // update waiting time
+                waitingTimes[currentProcess.id] = currentTime - currentProcess.arrivalTime - currentProcess.burstTime;
+
+                // update turnaround time
+                turnaroundTimes[currentProcess.id] = finishTimes[currentProcess.id] - currentProcess.arrivalTime;
+            } else {
+                currentTime++;
             }
         }
 
-        // Print table
+        // print table
         System.out.println("Process\tArrival Time\tBurst Time\tFinish Time\tTurnaround Time\tWaiting Time");
         for (int i = 0; i < n; i++) {
             System.out.printf("%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
