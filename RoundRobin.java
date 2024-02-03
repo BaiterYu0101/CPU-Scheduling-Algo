@@ -16,7 +16,7 @@ class Process {
 }
 
 public class RoundRobin {
-    public static void main(String[] args) {
+    public RoundRobin(SchedulingGUI schedulingGUI) {
         int[] arrivalTimes = {0, 1, 5, 6, 7, 8};
         int[] burstTimes = {6, 4, 6, 6, 6, 6};
         int quantum = 3;

@@ -17,6 +17,9 @@ public class Main {
                 case SchedulingGUI.NON_PREEMPTIVE_PRIORITY_SJF:
                     performNonPreemptiveScheduling(schedulingGUI);
                     break;
+                case SchedulingGUI.Round_Robin:
+                    RoundRobin roundRobin = new RoundRobin(schedulingGUI);
+                    break;
                 case SchedulingGUI.EXIT:
                     schedulingGUI.showMessage("Exiting the program. Goodbye!");
                     break;
