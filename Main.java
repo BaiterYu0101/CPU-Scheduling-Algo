@@ -50,16 +50,16 @@ public class Main {
         for (int i = 0; i < n; i++) {
             burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
 
-            if (burstTime[i] < 0) {
+            while (burstTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
-                return;
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
             }
 
             arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
 
-            if (arrivalTime[i] < 0) {
+            while (arrivalTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                return;
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
             }
 
             priority[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Priority: ");
@@ -93,16 +93,16 @@ public class Main {
         for (int i = 0; i < n; i++) {
             burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
 
-            if (burstTime[i] < 0) {
+            while (burstTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
-                return;
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
             }
 
             arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
 
-            if (arrivalTime[i] < 0) {
+            while (arrivalTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                return;
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
             }
         }
 
@@ -132,16 +132,16 @@ public class Main {
         for (int i = 0; i < n; i++) {
             burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
 
-            if (burstTime[i] < 0) {
+            while (burstTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
-                return;
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
             }
 
             arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
 
-            if (arrivalTime[i] < 0) {
+            while (arrivalTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                return;
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
             }
         }
 
