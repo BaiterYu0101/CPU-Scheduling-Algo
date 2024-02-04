@@ -1,6 +1,49 @@
 import java.util.Scanner;
 
 public class PP {
+    private String result;
+    private SchedulingGUI modifiedSchedulingGUI;
+
+    public PP(SchedulingGUI schedulingGUI) {
+        schedulingGUI.clearTable();
+
+        schedulingGUI.showMessage("Enter number of processes:");
+        int n = schedulingGUI.getIntInput();
+
+        if (n <= 0) {
+            schedulingGUI.showMessage("Invalid number of processes. Exiting.");
+            return;
+        }
+
+        int arrivalTime[] = new int[n];
+        int burstTime[] = new int[n];
+        int priority[] = new int[n];
+
+        schedulingGUI.showMessage("Enter Burst Time, Arrival Time, and Priority:");
+
+        for (int i = 0; i < n; i++) {
+            burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+
+            while (burstTime[i] < 0) {
+                schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+            }
+
+            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+
+            while (arrivalTime[i] < 0) {
+                schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+            }
+
+            priority[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Priority: ");
+        }
+
+        schedulingGUI.setTableHeaders(new String[]{"pid", "arrival", "burst", "priority", "complete", "turn", "waiting"});
+
+        result = performNonPreemptiveScheduling(n, arrivalTime, burstTime, priority);
+        modifiedSchedulingGUI = schedulingGUI;
+    }
 
     public String performNonPreemptiveScheduling(int n, int[] arrivalTime, int[] burstTime, int[] priority) {
         int pid[] = new int[n];
@@ -84,5 +127,13 @@ public class PP {
         result.append("average wt is ").append((float) (avgwt / n)).append("\n");
 
         return result.toString();
+    }
+
+    public String getOutput() {
+        return result;
+    }
+
+    public SchedulingGUI getModifiedSchedulingGUI() {
+        return modifiedSchedulingGUI;
     }
 }
