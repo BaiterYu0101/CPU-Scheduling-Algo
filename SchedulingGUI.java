@@ -8,7 +8,7 @@ public class SchedulingGUI {
     public static final int NON_PREEMPTIVE_SJF = 1;
     public static final int PREEMPTIVE_SJF = 2;
     public static final int NON_PREEMPTIVE_PRIORITY_SJF = 3;
-    public static final int Round_Robin = 4;
+    public static final int ROUND_ROBIN = 4;
     public static final int EXIT = 0;
 
     private JFrame frame;
