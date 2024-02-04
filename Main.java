@@ -19,6 +19,7 @@ public class Main {
                     break;
                 case SchedulingGUI.ROUND_ROBIN:
                     RoundRobin roundRobin = new RoundRobin(schedulingGUI);
+                    populateTable(roundRobin.getOutput(), roundRobin.getModifiedSchedulingGUI());
                     break;
                 case SchedulingGUI.EXIT:
                     schedulingGUI.showMessage("Exiting the program. Goodbye!");
@@ -146,6 +147,8 @@ public class Main {
 
         PSJF psjf = new PSJF();
         String result = psjf.performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
+
+        System.out.println(result);
 
         schedulingGUI.setTableHeaders(new String[]{"pid", "arrival", "burst", "complete", "turn", "waiting"});
         populateTable(result, schedulingGUI);

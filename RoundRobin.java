@@ -16,15 +16,50 @@ class Process {
 }
 
 public class RoundRobin {
-    public RoundRobin(SchedulingGUI schedulingGUI) {
-        int[] arrivalTimes = {0, 1, 5, 6, 7, 8};
-        int[] burstTimes = {6, 4, 6, 6, 6, 6};
-        int quantum = 3;
+    private String output;
+    private SchedulingGUI modifiedSchedulingGUI;
 
-        roundRobinScheduling(arrivalTimes, burstTimes, quantum);
+    public RoundRobin(SchedulingGUI schedulingGUI) {
+        schedulingGUI.clearTable();
+
+        schedulingGUI.showMessage("Enter number of processes:");
+        int n = schedulingGUI.getIntInput();
+
+        if (n <= 0) {
+            schedulingGUI.showMessage("Invalid number of processes. Exiting.");
+            return;
+        }
+
+        int arrivalTimes[] = new int[n];
+        int burstTimes[] = new int[n];
+
+
+        for (int i = 0; i < n; i++) {
+            arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
+
+            while (arrivalTimes[i] < 0) {
+                schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
+                arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
+            }
+
+            burstTimes[i] = schedulingGUI.getIntInput("P" + i + " Burst Time: ");
+
+            while (burstTimes[i] < 0) {
+                schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
+                burstTimes[i] = schedulingGUI.getIntInput("P" + i + " Burst Time: ");
+            }
+        }
+
+        int quantum = schedulingGUI.getIntInput("Enter quantum time: ");
+
+        schedulingGUI.setTableHeaders(new String[]{"Process", "Arrival Time", "Burst Time", "Finish Time", "Turnaround Time", "Waiting Time"});
+
+        output = roundRobinScheduling(arrivalTimes, burstTimes, quantum);
+        modifiedSchedulingGUI = schedulingGUI;
     }
 
-    public static void roundRobinScheduling(int[] arrivalTimes, int[] burstTimes, int quantum) {
+    public static String roundRobinScheduling(int[] arrivalTimes, int[] burstTimes, int quantum) {
+        StringBuilder result = new StringBuilder("Process\tArrival Time\tBurst Time\tFinish Time\tTurnaround Time\tWaiting Time\n");
         int n = arrivalTimes.length; // total number of processes
         Queue<Process> processQueue = new LinkedList<>();
 
@@ -47,17 +82,11 @@ public class RoundRobin {
                 // get the process from the front
                 Process currentProcess = processQueue.poll();
 
-                // testing: print process id
-                //System.out.println("Process " + currentProcess.id + " is executing");
-
                 // execute for quantum time
                 int executeTime = Math.min(quantum, currentProcess.remainingTime);
 
                 // update remaining time
                 currentProcess.remainingTime -= executeTime;
-                
-                // testing: print remaining time
-                //System.out.println("Remaining time: " + currentProcess.remainingTime);
 
                 // update finish time
                 currentTime += executeTime;
@@ -85,10 +114,18 @@ public class RoundRobin {
         }
 
         // print table
-        System.out.println("Process\tArrival Time\tBurst Time\tFinish Time\tTurnaround Time\tWaiting Time");
         for (int i = 0; i < n; i++) {
-            System.out.printf("%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
-                    i, arrivalTimes[i], burstTimes[i], finishTimes[i], turnaroundTimes[i], waitingTimes[i]);
+            result.append(i).append("\t").append(arrivalTimes[i]).append("\t\t").append(burstTimes[i]).append("\t\t").append(finishTimes[i]).append("\t\t").append(turnaroundTimes[i]).append("\t\t").append(waitingTimes[i]).append("\n");
         }
+
+        return result.toString();
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public SchedulingGUI getModifiedSchedulingGUI() {
+        return modifiedSchedulingGUI;
     }
 }
