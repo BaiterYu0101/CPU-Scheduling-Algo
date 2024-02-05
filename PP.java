@@ -1,4 +1,4 @@
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class PP {
     private String result;
@@ -22,24 +22,24 @@ public class PP {
         schedulingGUI.showMessage("Enter Burst Time, Arrival Time, and Priority:");
 
         for (int i = 0; i < n; i++) {
-            burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+            burstTime[i] = schedulingGUI.getIntInput("P" + (i) + " Burst Time: ");
 
             while (burstTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
-                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i) + " Burst Time: ");
             }
 
-            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i) + " Arrival Time: ");
 
             while (arrivalTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i) + " Arrival Time: ");
             }
 
-            priority[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Priority: ");
+            priority[i] = schedulingGUI.getIntInput("P" + (i) + " Priority: ");
         }
 
-        schedulingGUI.setTableHeaders(new String[]{"pid", "arrival", "burst", "priority", "complete", "turn", "waiting"});
+        schedulingGUI.setTableHeaders(new String[]{"Process", "Arrival Time", "Burst Time", "Priority", "Finishing Time", "Turnaround Time", "Waiting Time"});
 
         result = performNonPreemptiveScheduling(n, arrivalTime, burstTime, priority);
         modifiedSchedulingGUI = schedulingGUI;
@@ -55,7 +55,7 @@ public class PP {
         float avgwt = 0, avgta = 0;
 
         for (int i = 0; i < n; i++) {
-            pid[i] = i + 1;
+            pid[i] = i;
             f[i] = 0;
         }
 
@@ -87,8 +87,7 @@ public class PP {
             }
         }
 
-        StringBuilder result = new StringBuilder("pid  arrival burst priority complete turn waiting\n");
-
+        StringBuilder result = new StringBuilder("Process\tArrival Time\tBurst Time\tPriority\tFinishing Time\tTurnaround Time\tWaitingTime\n");
         while (true) {
             int c = n, highestPriority = 999;
 

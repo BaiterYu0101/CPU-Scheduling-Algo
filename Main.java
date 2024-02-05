@@ -1,4 +1,4 @@
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,9 +23,6 @@ public class Main {
                 case SchedulingGUI.ROUND_ROBIN:
                     RoundRobin roundRobin = new RoundRobin(schedulingGUI);
                     populateTable(roundRobin.getOutput(), roundRobin.getModifiedSchedulingGUI());
-                    break;
-                case SchedulingGUI.EXIT:
-                    schedulingGUI.showMessage("Exiting the program. Goodbye!");
                     break;
                 default:
                     schedulingGUI.showMessage("Invalid choice. Please choose again.");

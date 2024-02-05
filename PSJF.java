@@ -1,4 +1,4 @@
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class PSJF {
     private String output;
@@ -21,22 +21,22 @@ public class PSJF {
         schedulingGUI.showMessage("Enter Burst Time and Arrival Time:");
 
         for (int i = 0; i < n; i++) {
-            burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+            burstTime[i] = schedulingGUI.getIntInput("P" + (i) + " Burst Time: ");
 
             while (burstTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
-                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i) + " Burst Time: ");
             }
 
-            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i) + " Arrival Time: ");
 
             while (arrivalTime[i] < 0) {
                 schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i) + " Arrival Time: ");
             }
         }
 
-        schedulingGUI.setTableHeaders(new String[]{"pid", "arrival", "burst", "complete", "turn", "waiting"});
+        schedulingGUI.setTableHeaders(new String[]{"Process", "Arrival Time", "Burst Time", "Complete Time", "Turnaround Time", "Waiting Time"});
         output = performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
         modifiedSchedulingGUI = schedulingGUI;
     }
@@ -52,7 +52,7 @@ public class PSJF {
         float avgwt = 0, avgta = 0;
 
         for (int i = 0; i < n; i++) {
-            pid[i] = i + 1;
+            pid[i] = i;
             k[i] = burstTime[i];
             f[i] = 0;
         }

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SchedulingGUI {
@@ -27,7 +27,7 @@ public class SchedulingGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
 
-        algorithmComboBox = new JComboBox<>(new String[]{"Select Algorithm", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Round Robin", "Exit"});
+        algorithmComboBox = new JComboBox<>(new String[]{"Select Algorithm", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Round Robin"});
         frame.getContentPane().add(algorithmComboBox, BorderLayout.NORTH);
 
         executeButton = new JButton("Execute");
