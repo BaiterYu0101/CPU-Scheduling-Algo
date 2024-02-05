@@ -14,6 +14,7 @@ public class Main {
                     break;
                 case SchedulingGUI.PREEMPTIVE_SJF:
                     PSJF psjf = new PSJF(schedulingGUI);
+                    generateGanttChart(psjf.getGanttChartOutput(), psjf.getModifiedSchedulingGUI());
                     populateTable(psjf.getOutput(), psjf.getModifiedSchedulingGUI());
                     break;
                 case SchedulingGUI.NON_PREEMPTIVE_PRIORITY_SJF:
@@ -86,5 +87,4 @@ public class Main {
         schedulingGUI.addGanttChartRow(new Object[] { ganttChart.toString() });
         schedulingGUI.addGanttChartRow(new Object[] { ganttNumbers.toString() });
     }
-
 }

@@ -1,6 +1,9 @@
+import java.util.Arrays;
+
 public class PSJF {
     private String output;
     private SchedulingGUI modifiedSchedulingGUI;
+    private String ganttChartOutput;
 
     public PSJF(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
@@ -39,51 +42,52 @@ public class PSJF {
         modifiedSchedulingGUI = schedulingGUI;
     }
 
-    public String performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
+    private String performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
+        StringBuilder result = new StringBuilder("pid\tarrival\tburst\tcomplete\tturn\twaiting\n");
+
         int pid[] = new int[n];
         int ct[] = new int[n];
         int ta[] = new int[n];
         int wt[] = new int[n];
         int f[] = new int[n];
-        int k[] = new int[n];
+        int k[] = Arrays.copyOf(burstTime, n);
         int st = 0, tot = 0;
         float avgwt = 0, avgta = 0;
 
-        for (int i = 0; i < n; i++) {
-            pid[i] = i;
-            k[i] = burstTime[i];
-            f[i] = 0;
-        }
-
-        StringBuilder result = new StringBuilder("pid  arrival  burst  complete turn waiting\n");
+        // Gantt chart related variables
+        StringBuilder ganttChart = new StringBuilder("Gantt Chart:\n");
+        int currentTime = 0;
 
         while (true) {
-            int min = 99, c = n;
+            int min = Integer.MAX_VALUE, c = n;
             if (tot == n) {
                 break;
             }
 
             for (int i = 0; i < n; i++) {
-                if ((arrivalTime[i] <= st) && (f[i] == 0) && (burstTime[i] < min)) {
+                if ((arrivalTime[i] <= currentTime) && (f[i] == 0) && (burstTime[i] < min)) {
                     min = burstTime[i];
                     c = i;
                 }
             }
 
             if (c == n) {
-                st++;
+                currentTime++;
             } else {
                 burstTime[c]--;
-                st++;
+                currentTime++;
                 if (burstTime[c] == 0) {
-                    ct[c] = st;
+                    ct[c] = currentTime;
                     f[c] = 1;
                     tot++;
                 }
+                // Update Gantt chart
+                ganttChart.append("|P").append(c).append(":").append(currentTime - 1).append("-").append(currentTime).append("|");
             }
         }
 
         for (int i = 0; i < n; i++) {
+            pid[i] = i;
             ta[i] = ct[i] - arrivalTime[i];
             wt[i] = ta[i] - k[i];
             avgwt += wt[i];
@@ -95,6 +99,9 @@ public class PSJF {
         result.append("\naverage tat is ").append(avgta / n).append("\n");
         result.append("average wt is ").append(avgwt / n).append("\n");
 
+        // Set Gantt chart output
+        ganttChartOutput = ganttChart.toString();
+
         return result.toString();
     }
 
@@ -104,5 +111,9 @@ public class PSJF {
 
     public SchedulingGUI getModifiedSchedulingGUI() {
         return modifiedSchedulingGUI;
+    }
+
+    public String getGanttChartOutput() {
+        return ganttChartOutput;
     }
 }
