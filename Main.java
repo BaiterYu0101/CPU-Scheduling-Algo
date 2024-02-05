@@ -41,8 +41,8 @@ public class Main {
 
     private static void generateGanttChart(String ganttChartOutput, SchedulingGUI schedulingGUI) {
         String[] lines = ganttChartOutput.split("\n");
-        String[] headers = lines[0].split("\\s+");
-        schedulingGUI.setGanttChartHeaders(Arrays.copyOfRange(headers, 1, headers.length));
+        String[] header = {"Gantt Chart"};
+        schedulingGUI.setGanttChartHeader(header);
 
         for (int i = 1; i < lines.length; i++) {
             String[] rowData = lines[i].split("\\s+");

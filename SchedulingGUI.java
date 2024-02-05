@@ -99,7 +99,7 @@ public class SchedulingGUI {
         tableModel.setRowCount(0);
     }
 
-    public void setGanttChartHeaders(String[] headers) {
+    public void setGanttChartHeader(String[] headers) {
         ganttChartModel.setColumnIdentifiers(headers);
     }
 
