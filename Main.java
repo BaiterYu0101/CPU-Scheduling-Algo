@@ -8,6 +8,7 @@ public class Main {
             switch (selectedAlgorithm) {
                 case SchedulingGUI.NON_PREEMPTIVE_SJF:
                     SJF sjf = new SJF(schedulingGUI);
+                    generateGanttChart(sjf.getGanttChartOutput(), sjf.getModifiedSchedulingGUI());
                     populateTable(sjf.getOutput(), sjf.getModifiedSchedulingGUI());
                     break;
                 case SchedulingGUI.PREEMPTIVE_SJF:

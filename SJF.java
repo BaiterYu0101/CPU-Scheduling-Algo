@@ -1,6 +1,7 @@
 public class SJF {
     private String output;
     private SchedulingGUI modifiedSchedulingGUI;
+    private String ganttChartOutput;
 
     public SJF(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
@@ -55,6 +56,8 @@ public class SJF {
         }
 
         StringBuilder result = new StringBuilder("pid  arrival burst  complete turn waiting\n");
+        StringBuilder ganttChart = new StringBuilder("Gantt Chart:\n");
+        int currentTime = 0;
 
         while (true) {
             int c = n, min = 999;
@@ -79,6 +82,9 @@ public class SJF {
                 wt[c] = ta[c] - burstTime[c];
                 f[c] = 1;
                 tot++;
+
+                ganttChart.append("|P").append(c).append(":").append(currentTime).append("-").append(st).append("|");
+                currentTime = st;
             }
         }
 
@@ -92,6 +98,7 @@ public class SJF {
         result.append("\naverage tat is ").append(avgta / n).append("\n");
         result.append("average wt is ").append(avgwt / n).append("\n");
 
+        ganttChartOutput = ganttChart.toString();
         return result.toString();
     }
 
@@ -101,5 +108,9 @@ public class SJF {
 
     public SchedulingGUI getModifiedSchedulingGUI() {
         return modifiedSchedulingGUI;
+    }
+
+    public String getGanttChartOutput() {
+        return ganttChartOutput;
     }
 }
