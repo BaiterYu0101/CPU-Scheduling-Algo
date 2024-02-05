@@ -7,6 +7,7 @@ public class PSJF {
 
     public PSJF(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
+        schedulingGUI.clearGanttChart();
 
         schedulingGUI.showMessage("Enter number of processes:");
         int n = schedulingGUI.getIntInput();
@@ -51,7 +52,7 @@ public class PSJF {
         int wt[] = new int[n];
         int f[] = new int[n];
         int k[] = Arrays.copyOf(burstTime, n);
-        int st = 0, tot = 0;
+        int tot = 0;
         float avgwt = 0, avgta = 0;
 
         // Gantt chart related variables

@@ -22,6 +22,7 @@ public class RoundRobin {
 
     public RoundRobin(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
+        schedulingGUI.clearGanttChart();
 
         schedulingGUI.showMessage("Enter number of processes:");
         int n = schedulingGUI.getIntInput();
@@ -145,5 +146,53 @@ public class RoundRobin {
 
     public String getGanttChartOutput() {
         return ganttChartOutput;
+    }
+
+    public static void generateGanttChart(String ganttChartOutput, SchedulingGUI schedulingGUI) {
+        String[] lines = ganttChartOutput.split("\n");
+        String[] header = { "Gantt Chart" };
+        schedulingGUI.setGanttChartHeader(header);
+
+        StringBuilder ganttChart = new StringBuilder();
+        StringBuilder ganttNumbers = new StringBuilder();
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] rowData = lines[i].split("\\|");
+            int columnWidth = 2;
+
+            for (int j = 0; j < rowData.length; j++) {
+                String cell = rowData[j].trim();
+                if (!cell.isEmpty()) {
+                    String[] processInfo = cell.split(":");
+                    int processId = Integer.parseInt(processInfo[0].substring(1));
+                    int startTime = Integer.parseInt(processInfo[1].split("-")[0]);
+                    int endTime = Integer.parseInt(processInfo[1].split("-")[1]);
+
+                    int duration = endTime - startTime;
+                    columnWidth = Math.max(columnWidth, duration + 2);
+
+                    if (ganttChart.length() == 0) {
+                        ganttChart.append(String.format("P%-3d", processId));
+                    } else {
+                        ganttChart.append(String.format("| P%-3d ", processId));
+                    }
+
+                    if (j == 1) {
+                        ganttNumbers.append(
+                                String.format(" %-" + columnWidth + "s  %-" + columnWidth + "s ", startTime, endTime));
+                    } else {
+                        ganttNumbers.append(String.format(" %-" + columnWidth + "s ", endTime));
+                    }
+                }
+            }
+
+            if (i < lines.length - 1) {
+                ganttChart.append("|");
+                ganttNumbers.append(" ");
+            }
+        }
+
+        schedulingGUI.addGanttChartRow(new Object[] { ganttChart.toString() });
+        schedulingGUI.addGanttChartRow(new Object[] { ganttNumbers.toString() });
     }
 }

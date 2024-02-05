@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         SchedulingGUI schedulingGUI = new SchedulingGUI();
@@ -19,11 +17,12 @@ public class Main {
                     break;
                 case SchedulingGUI.NON_PREEMPTIVE_PRIORITY_SJF:
                     PP pp = new PP(schedulingGUI);
+                    generateGanttChart(pp.getGanttChartOutput(), pp.getModifiedSchedulingGUI());
                     populateTable(pp.getOutput(), pp.getModifiedSchedulingGUI());
                     break;
                 case SchedulingGUI.ROUND_ROBIN:
                     RoundRobin roundRobin = new RoundRobin(schedulingGUI);
-                    generateGanttChart(roundRobin.getGanttChartOutput(), roundRobin.getModifiedSchedulingGUI());
+                    RoundRobin.generateGanttChart(roundRobin.getGanttChartOutput(), roundRobin.getModifiedSchedulingGUI());
                     populateTable(roundRobin.getOutput(), roundRobin.getModifiedSchedulingGUI());
                     break;
                 default:
@@ -64,9 +63,9 @@ public class Main {
                     columnWidth = Math.max(columnWidth, duration + 2);
 
                     if (ganttChart.length() == 0) {
-                        ganttChart.append(String.format("P%-3d", processId));
+                        ganttChart.append(String.format("P%-" + columnWidth + "s |", processId));
                     } else {
-                        ganttChart.append(String.format("| P%-3d ", processId));
+                        ganttChart.append(String.format("P%-" + columnWidth + "s |", processId));
                     }
 
                     if (j == 1) {

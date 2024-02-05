@@ -4,6 +4,7 @@ public class SJF {
 
     public SJF(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
+        schedulingGUI.clearGanttChart();
 
         schedulingGUI.showMessage("Enter number of processes:");
         int n = schedulingGUI.getIntInput();

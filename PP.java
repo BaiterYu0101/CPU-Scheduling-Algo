@@ -1,9 +1,11 @@
 public class PP {
     private String result;
     private SchedulingGUI modifiedSchedulingGUI;
+    private String ganttChartOutput;
 
     public PP(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
+        schedulingGUI.clearGanttChart();
 
         schedulingGUI.showMessage("Enter number of processes:");
         int n = schedulingGUI.getIntInput();
@@ -52,12 +54,15 @@ public class PP {
         int st = 0, tot = 0;
         float avgwt = 0, avgta = 0;
 
+        // Gantt chart related variables
+        StringBuilder ganttChart = new StringBuilder("Gantt Chart:\n");
+        int currentTime = 0;
+
         for (int i = 0; i < n; i++) {
             pid[i] = i;
             f[i] = 0;
         }
 
-        // Sort processes based on arrival time and priority
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
                 if (arrivalTime[j] > arrivalTime[j + 1] || 
@@ -110,6 +115,9 @@ public class PP {
                 f[c] = 1;
                 tot++;
             }
+            // Update Gantt chart
+            ganttChart.append("|P").append(c).append(":").append(currentTime).append("-").append(st).append("|");
+            currentTime = st;
         }
 
         for (int i = 0; i < n; i++) {
@@ -123,6 +131,9 @@ public class PP {
         result.append("\naverage tat is ").append((float) (avgta / n)).append("\n");
         result.append("average wt is ").append((float) (avgwt / n)).append("\n");
 
+        // Set Gantt chart output
+        ganttChartOutput = ganttChart.toString();
+
         return result.toString();
     }
 
@@ -132,5 +143,9 @@ public class PP {
 
     public SchedulingGUI getModifiedSchedulingGUI() {
         return modifiedSchedulingGUI;
+    }
+
+    public String getGanttChartOutput() {
+        return ganttChartOutput;
     }
 }
