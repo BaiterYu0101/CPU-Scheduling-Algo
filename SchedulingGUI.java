@@ -16,6 +16,8 @@ public class SchedulingGUI {
     private JButton executeButton;
     private JTable resultTable;
     private DefaultTableModel tableModel;
+    private JTable ganttChartTable;
+    private DefaultTableModel ganttChartModel;
 
     public SchedulingGUI() {
         initialize();
@@ -33,10 +35,24 @@ public class SchedulingGUI {
         executeButton = new JButton("Execute");
         frame.getContentPane().add(executeButton, BorderLayout.SOUTH);
 
+        // center panel
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+        // add gantt chart
+        ganttChartModel = new DefaultTableModel();
+        ganttChartTable = new JTable(ganttChartModel);
+        JScrollPane ganttChartScrollPane = new JScrollPane(ganttChartTable);
+        centerPanel.add(ganttChartScrollPane);
+
+        // add table below gantt chart
         tableModel = new DefaultTableModel();
         resultTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(resultTable);
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        centerPanel.add(scrollPane);
+
+        // add center panel to frame
+        frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
@@ -81,5 +97,17 @@ public class SchedulingGUI {
 
     public void clearTable() {
         tableModel.setRowCount(0);
+    }
+
+    public void setGanttChartHeaders(String[] headers) {
+        ganttChartModel.setColumnIdentifiers(headers);
+    }
+
+    public void addGanttChartRow(Object[] rowData) {
+        ganttChartModel.addRow(rowData);
+    }
+
+    public void clearGanttChart() {
+        ganttChartModel.setRowCount(0);
     }
 }

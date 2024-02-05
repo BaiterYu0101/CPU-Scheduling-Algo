@@ -18,6 +18,7 @@ class Process {
 public class RoundRobin {
     private String output;
     private SchedulingGUI modifiedSchedulingGUI;
+    private String ganttChartOutput;
 
     public RoundRobin(SchedulingGUI schedulingGUI) {
         schedulingGUI.clearTable();
@@ -35,18 +36,18 @@ public class RoundRobin {
 
 
         for (int i = 0; i < n; i++) {
-            arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
-
-            while (arrivalTimes[i] < 0) {
-                schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
-                arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
-            }
-
             burstTimes[i] = schedulingGUI.getIntInput("P" + i + " Burst Time: ");
 
             while (burstTimes[i] < 0) {
                 schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
                 burstTimes[i] = schedulingGUI.getIntInput("P" + i + " Burst Time: ");
+            }
+
+            arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
+
+            while (arrivalTimes[i] < 0) {
+                schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
+                arrivalTimes[i] = schedulingGUI.getIntInput("P" + i + " Arrival Time: ");
             }
         }
 
@@ -58,7 +59,7 @@ public class RoundRobin {
         modifiedSchedulingGUI = schedulingGUI;
     }
 
-    public static String roundRobinScheduling(int[] arrivalTimes, int[] burstTimes, int quantum) {
+    public String roundRobinScheduling(int[] arrivalTimes, int[] burstTimes, int quantum) {
         StringBuilder result = new StringBuilder("Process\tArrival Time\tBurst Time\tFinish Time\tTurnaround Time\tWaiting Time\n");
         int n = arrivalTimes.length; // total number of processes
         Queue<Process> processQueue = new LinkedList<>();
@@ -69,6 +70,9 @@ public class RoundRobin {
 
         int currentTime = 0;
         int currentProcessIndex = 0;
+        // Gantt chart related variables
+        StringBuilder ganttChart = new StringBuilder("Gantt Chart:\n");
+        int ganttTime = 0;
 
         while (currentProcessIndex < n || !processQueue.isEmpty()) {
             // add arrived processes to the queue
@@ -91,6 +95,12 @@ public class RoundRobin {
                 // update finish time
                 currentTime += executeTime;
                 finishTimes[currentProcess.id] = currentTime;
+
+                // update gantt chart
+                ganttChart.append("|P").append(currentProcess.id).append(":").append(ganttTime).append("-").append(ganttTime + executeTime).append("|");
+
+                ganttTime += executeTime;
+
 
                 // get next process and execute
                 while (currentProcessIndex < n && arrivalTimes[currentProcessIndex] <= currentTime) {
@@ -118,6 +128,10 @@ public class RoundRobin {
             result.append(i).append("\t").append(arrivalTimes[i]).append("\t\t").append(burstTimes[i]).append("\t\t").append(finishTimes[i]).append("\t\t").append(turnaroundTimes[i]).append("\t\t").append(waitingTimes[i]).append("\n");
         }
 
+        // print gantt chart
+        //System.out.println(ganttChart.toString());
+        ganttChartOutput = ganttChart.toString();
+
         return result.toString();
     }
 
@@ -127,5 +141,9 @@ public class RoundRobin {
 
     public SchedulingGUI getModifiedSchedulingGUI() {
         return modifiedSchedulingGUI;
+    }
+
+    public String getGanttChartOutput() {
+        return ganttChartOutput;
     }
 }

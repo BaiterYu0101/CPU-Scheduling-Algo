@@ -22,6 +22,7 @@ public class Main {
                     break;
                 case SchedulingGUI.ROUND_ROBIN:
                     RoundRobin roundRobin = new RoundRobin(schedulingGUI);
+                    generateGanttChart(roundRobin.getGanttChartOutput(), roundRobin.getModifiedSchedulingGUI());
                     populateTable(roundRobin.getOutput(), roundRobin.getModifiedSchedulingGUI());
                     break;
                 default:
@@ -35,6 +36,17 @@ public class Main {
         for (int i = 1; i < lines.length; i++) {
             String[] rowData = lines[i].split("\\s+");
             schedulingGUI.addTableRow(rowData);
+        }
+    }
+
+    private static void generateGanttChart(String ganttChartOutput, SchedulingGUI schedulingGUI) {
+        String[] lines = ganttChartOutput.split("\n");
+        String[] headers = lines[0].split("\\s+");
+        schedulingGUI.setGanttChartHeaders(Arrays.copyOfRange(headers, 1, headers.length));
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] rowData = lines[i].split("\\s+");
+            schedulingGUI.addGanttChartRow(rowData);
         }
     }
 }
