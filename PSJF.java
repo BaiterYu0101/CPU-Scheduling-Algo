@@ -1,6 +1,46 @@
 import java.util.Scanner;
 
 public class PSJF {
+    private String output;
+    private SchedulingGUI modifiedSchedulingGUI;
+
+    public PSJF(SchedulingGUI schedulingGUI) {
+        schedulingGUI.clearTable();
+
+        schedulingGUI.showMessage("Enter number of processes:");
+        int n = schedulingGUI.getIntInput();
+
+        if (n <= 0) {
+            schedulingGUI.showMessage("Invalid number of processes. Exiting.");
+            return;
+        }
+
+        int arrivalTime[] = new int[n];
+        int burstTime[] = new int[n];
+
+        schedulingGUI.showMessage("Enter Burst Time and Arrival Time:");
+
+        for (int i = 0; i < n; i++) {
+            burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+
+            while (burstTime[i] < 0) {
+                schedulingGUI.showMessage("Invalid burst time. Please enter a non-negative value.");
+                burstTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Burst Time: ");
+            }
+
+            arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+
+            while (arrivalTime[i] < 0) {
+                schedulingGUI.showMessage("Invalid arrival time. Please enter a non-negative value.");
+                arrivalTime[i] = schedulingGUI.getIntInput("P" + (i + 1) + " Arrival Time: ");
+            }
+        }
+
+        schedulingGUI.setTableHeaders(new String[]{"pid", "arrival", "burst", "complete", "turn", "waiting"});
+        output = performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
+        modifiedSchedulingGUI = schedulingGUI;
+    }
+
     public String performPreemptiveSJFScheduling(int n, int[] arrivalTime, int[] burstTime) {
         int pid[] = new int[n];
         int ct[] = new int[n];
@@ -54,30 +94,17 @@ public class PSJF {
                     .append(ct[i]).append("\t").append(ta[i]).append("\t").append(wt[i]).append("\n");
         }
 
-        result.append("\naverage tat is ").append((float) (avgta / n)).append("\n");
-        result.append("average wt is ").append((float) (avgwt / n)).append("\n");
+        result.append("\naverage tat is ").append(avgta / n).append("\n");
+        result.append("average wt is ").append(avgwt / n).append("\n");
 
         return result.toString();
     }
 
-    public static void main(String args[]) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("enter no of process:");
-        int n = sc.nextInt();
-        int arrivalTime[] = new int[n];
-        int burstTime[] = new int[n];
+    public String getOutput() {
+        return output;
+    }
 
-        for (int i = 0; i < n; i++) {
-            System.out.println("enter process " + (i + 1) + " arrival time:");
-            arrivalTime[i] = sc.nextInt();
-            System.out.println("enter process " + (i + 1) + " burst time:");
-            burstTime[i] = sc.nextInt();
-        }
-
-        PSJF psjf = new PSJF();
-        String result = psjf.performPreemptiveSJFScheduling(n, arrivalTime, burstTime);
-        System.out.println(result);
-
-        sc.close();
+    public SchedulingGUI getModifiedSchedulingGUI() {
+        return modifiedSchedulingGUI;
     }
 }
