@@ -1,5 +1,3 @@
-//import java.util.Scanner;
-
 public class SJF {
     private String output;
     private SchedulingGUI modifiedSchedulingGUI;
