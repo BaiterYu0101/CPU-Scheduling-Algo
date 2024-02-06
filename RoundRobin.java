@@ -141,7 +141,7 @@ public class RoundRobin {
 
         }
         result.append("\naverageTurnaroundTime ").append(averageTurnaroundTime / n).append("\n");
-        result.append("averageWaitingTime").append(averageWaitingTime / n).append("\n");
+        result.append("averageWaitingTime ").append(averageWaitingTime / n).append("\n");
 
 
         // print gantt chart
