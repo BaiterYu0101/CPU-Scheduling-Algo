@@ -54,6 +54,11 @@ public class RoundRobin {
 
         int quantum = schedulingGUI.getIntInput("Enter quantum time: ");
 
+        while (quantum <= 0) {
+            schedulingGUI.showMessage("Invalid quantum time. Please enter a positive value.");
+            quantum = schedulingGUI.getIntInput("Enter quantum time: ");
+        }
+
         schedulingGUI.setTableHeaders(new String[]{"Process", "Arrival Time", "Burst Time", "Finish Time", "Turnaround Time", "Waiting Time"});
 
         output = roundRobinScheduling(arrivalTimes, burstTimes, quantum);
@@ -64,6 +69,7 @@ public class RoundRobin {
         StringBuilder result = new StringBuilder("Process\tArrival Time\tBurst Time\tFinish Time\tTurnaround Time\tWaiting Time\n");
         int n = arrivalTimes.length; // total number of processes
         Queue<Process> processQueue = new LinkedList<>();
+        float averageWaitingTime = 0, averageTurnaroundTime = 0;
 
         int[] finishTimes = new int[n];
         int[] turnaroundTimes = new int[n];
@@ -123,11 +129,20 @@ public class RoundRobin {
                 currentTime++;
             }
         }
+        for (int i = 0; i < n; i++) {
+            averageWaitingTime += waitingTimes[i];
+            averageTurnaroundTime += turnaroundTimes[i];
+        }
+
 
         // print table
         for (int i = 0; i < n; i++) {
             result.append(i).append("\t").append(arrivalTimes[i]).append("\t\t").append(burstTimes[i]).append("\t\t").append(finishTimes[i]).append("\t\t").append(turnaroundTimes[i]).append("\t\t").append(waitingTimes[i]).append("\n");
+
         }
+        result.append("\naverageTurnaroundTime ").append(averageTurnaroundTime / n).append("\n");
+        result.append("averageWaitingTime").append(averageWaitingTime / n).append("\n");
+
 
         // print gantt chart
         //System.out.println(ganttChart.toString());
