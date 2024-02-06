@@ -13,3 +13,11 @@ Recommended java version : Azul zulu 20+
 ```
 javac *.java && java Main
 ```
+
+## Group Members
+
+| Num | Name          | Student ID |
+| --- | ------------- | ---------- |
+| 1   | LEE RONG YI   | 1211311027 |
+| 2   | AU JI HIN     | 1211308797 |
+| 3   | WONG GUANG YU | 1211307906 |
